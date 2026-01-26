@@ -3,16 +3,16 @@
     "platforms": {
       "android": {
         "default": {
-          "projectId": "medikeep-dev-872af",
-          "appId": "1:922134535489:android:b5e40ef9cace3c97de95c0",
+          "projectId": " ",
+          "appId": " ",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "dart": {
         "lib/firebase_options.dart": {
-          "projectId": "medikeep-dev-872af",
+          "projectId": " ",
           "configurations": {
-            "android": "1:922134535489:android:b5e40ef9cace3c97de95c0"
+            "android": " "
           }
         }
       }
