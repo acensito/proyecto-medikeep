@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- FUNCIONES DE AYUDA (HELPERS) ---
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Verifica si el usuario actual es el propietario (owner)
+    // Usamos .get() con un valor por defecto ('') para evitar errores si el UID no existe en el mapa
+    function isSpaceOwner(spaceData) {
+      return spaceData.members.get(request.auth.uid, '') == 'owner';
+    }
+
+    // Verifica si el usuario es miembro (cualquier rol)
+    function isSpaceMember(spaceData) {
+      return request.auth.uid in spaceData.members;
+    }
+
+    // --- REGLAS DE COLECCIONES ---
+
+    // 1. USUARIOS (/users)
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // 2. SPACES (/spaces)
+    match /spaces/{spaceId} {
+      // Lectura: Cualquier miembro puede leer
+      allow read: if isAuthenticated() && isSpaceMember(resource.data);
+      
+      // Creación: Cualquier usuario logueado puede crear un space
+      allow create: if isAuthenticated();
+      
+      // Actualización y Borrado: SOLO el dueño puede hacerlo
+      // 'resource.data' se refiere al documento que YA EXISTE en la base de datos
+      allow update: if isAuthenticated() && isSpaceOwner(resource.data);
+      allow delete: if isAuthenticated() && isSpaceOwner(resource.data);
+
+      // Reglas para subcolecciones (Heredan lógica del Space padre)
+      match /storage_boxes/{boxId} {
+        allow read: if isAuthenticated() && isSpaceMember(get(/databases/$(database)/documents/spaces/$(spaceId)).data);
+        allow write: if isAuthenticated() && (
+          get(/databases/$(database)/documents/spaces/$(spaceId)).data.members.get(request.auth.uid, '') in ['owner', 'editor']
+        );
+      }
+
+      match /medications/{medId} {
+        allow read: if isAuthenticated() && isSpaceMember(get(/databases/$(database)/documents/spaces/$(spaceId)).data);
+        allow write: if isAuthenticated() && (
+          get(/databases/$(database)/documents/spaces/$(spaceId)).data.members.get(request.auth.uid, '') in ['owner', 'editor']
+        );
+      }
+    }
+  }
+}
