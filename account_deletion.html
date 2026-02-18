@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediKeep - Solicitud de Eliminación de Cuenta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-2xl w-full bg-white shadow-xl rounded-2xl p-8 md:p-12 border border-gray-100">
+        <!-- Logo/Encabezado -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-teal-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Eliminar mi cuenta de MediKeep</h1>
+            <p class="mt-4 text-gray-600">Lamentamos que quieras irte. Aquí puedes gestionar la baja de tu cuenta y la eliminación de tus datos personales.</p>
+        </div>
+
+        <!-- Información sobre los datos -->
+        <div class="space-y-6">
+            <section class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                <h2 class="text-amber-800 font-bold flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                    ¿Qué datos se eliminarán?
+                </h2>
+                <p class="mt-2 text-sm text-amber-700">Al procesar tu solicitud, eliminaremos de forma permanente:</p>
+                <ul class="list-disc list-inside mt-2 text-sm text-amber-700">
+                    <li>Tu perfil de usuario (nombre y foto).</li>
+                    <li>Tus registros de medicamentos personales.</li>
+                    <li>Tus credenciales de acceso.</li>
+                </ul>
+                <p class="mt-2 text-xs text-amber-600 italic">* Si eres el único propietario de un "Space" compartido, el espacio y su contenido también serán eliminados.</p>
+            </section>
+
+            <section>
+                <h3 class="text-lg font-semibold text-gray-900">Cómo solicitar la eliminación</h3>
+                <p class="mt-2 text-gray-600">Para garantizar la seguridad de tu identidad, procesamos las solicitudes vía correo electrónico. Por favor, envía un mensaje con los siguientes datos:</p>
+                
+                <div class="mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200">
+                    <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Enviar correo a:</p>
+                    <p class="text-lg font-bold text-teal-700">acenforos@gmail.com</p>
+                    <p class="mt-3 text-sm font-medium text-gray-500 uppercase tracking-wider">Asunto:</p>
+                    <p class="text-gray-700">Eliminar mi cuenta - [Tu Email de registro]</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Pie de página -->
+        <footer class="mt-12 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+            Procesaremos tu solicitud en un plazo máximo de 48 horas laborales.<br>
+            © 2026 MediKeep - Gestión Inteligente de Medicamentos.
+        </footer>
+    </div>
+
+</body>
+</html>
