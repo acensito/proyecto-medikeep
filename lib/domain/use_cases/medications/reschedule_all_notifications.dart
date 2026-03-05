@@ -18,7 +18,7 @@ class RescheduleAllNotifications {
   // Retorna void
   Future<void> call(AppUser user) async {
     // Log de inicio por terminal/consola
-    Console.log('🔄 Iniciando resincronización de notificaciones para: ${user.name}');
+    Console.log('Iniciando resincronización de notificaciones para: ${user.name}');
     // Contador de notificaciones reprogramadas
     int count = 0;
 
@@ -52,6 +52,6 @@ class RescheduleAllNotifications {
     }
     
     // Log indicando que hemos finalizado y cuántas alarmas se han programado
-    Console.log('✅ Resincronización completada. $count alarmas programadas.');
+    Console.log('Resincronización completada. $count alarmas programadas.');
   }
 }

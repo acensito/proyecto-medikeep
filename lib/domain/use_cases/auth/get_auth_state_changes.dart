@@ -7,7 +7,7 @@ class GetAuthStateChanges {
   // Repositorio de autenticación.
   final AuthRepository repository;
   // Constructor del caso de uso.
-  GetAuthStateChanges(this.repository);
+  GetAuthStateChanges({required this.repository});
 
   // Llama al caso de uso.
   Stream<AppUser?> call() {

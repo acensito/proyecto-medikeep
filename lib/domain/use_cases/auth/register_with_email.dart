@@ -10,7 +10,7 @@ class RegisterWithEmail {
   final AuthRepository repository;
 
   // Constructor que recibe el repositorio.
-  RegisterWithEmail(this.repository);
+  RegisterWithEmail({required this.repository});
 
   // Método que ejecuta el caso de uso.
   // Retorna un Either con un Failure o un AppUser registrado

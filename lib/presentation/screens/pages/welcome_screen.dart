@@ -56,10 +56,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
           );
         },
         (_) async {
-          // guardamos en shared preferences que hemos hecho el welcome
-          final prefs = ref.read(sharedPreferencesProvider);
-          await prefs.setBool(kOnboardingSeenKey, true);
-
           // refrescamos el auth, y navegamos al home
           ref.invalidate(authStateChangesProvider);
           setState(() => _isLoading = false);

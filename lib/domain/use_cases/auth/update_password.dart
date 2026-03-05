@@ -8,7 +8,7 @@ class UpdatePassword {
   final AuthRepository repository;
 
   //constructor
-  UpdatePassword(this.repository);
+  UpdatePassword({required this.repository});
 
   // metodo que recibe un texto con el nuevo password y llama al metodo del repositorio correspondiente
   // valida previamente que el password cumpla las condiciones marcadas

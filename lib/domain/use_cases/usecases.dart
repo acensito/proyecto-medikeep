@@ -5,6 +5,7 @@ export 'auth/sign_in_with_email.dart';
 export 'auth/sign_in_with_google.dart';
 export 'auth/sign_out.dart';
 export 'auth/send_password_reset_email.dart';
+export 'auth/send_email_verification.dart';
 export 'auth/update_password.dart';
 export 'medications/add_medication_usecase.dart';
 export 'medications/delete_medication_usecase.dart';

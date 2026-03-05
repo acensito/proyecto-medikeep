@@ -24,4 +24,10 @@ abstract class AuthRemoteDataSource {
 
   /// Método que actualiza la contraseña de usuario actual (requiere un login reciente)
   Future<void> updatePassword(String newPassword);
+
+  /// Método que envia un Email para verificar la cuenta
+  Future<void> sendEmailVerification();
+
+  /// Método que envia el estado de la verificación de un usuario
+  Future<bool> checkVerificationStatus();
 }

@@ -9,7 +9,7 @@ class SignInWithGoogle {
   final AuthRepository repository;
 
   // Constructor
-  SignInWithGoogle(this.repository);
+  SignInWithGoogle({required this.repository});
 
   // Método para ejecutar el caso de uso
   // Retorna un Either con un Failure o un AppUser autenticado

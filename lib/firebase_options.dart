@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: '',
     storageBucket: '',
   );
+
 }

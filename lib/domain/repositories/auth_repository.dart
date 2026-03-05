@@ -37,4 +37,10 @@ abstract class AuthRepository {
 
   // Actualiza el password
   Future<Either<Failure, void>> updatePassword(String newPassword);
+
+  // Manda correo de verificación
+  Future<Either<Failure, void>> sendEmailVerification();
+
+  // Comprueba el estado de verificación de un usuario
+  Future<Either<Failure, bool>> checkVerificationStatus();
 }

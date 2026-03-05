@@ -8,7 +8,7 @@ class SendPasswordResetEmail {
   final AuthRepository repository;
 
   // constructor
-  SendPasswordResetEmail(this.repository);
+  SendPasswordResetEmail({required this.repository});
 
   // metodo que recibe un email y llama al metodo correspondiente para mandar un email
   // valida previamente que sea un email válido/correcto

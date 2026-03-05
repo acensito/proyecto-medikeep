@@ -30,14 +30,14 @@ class SpaceManagementScreen extends ConsumerWidget {
 
     return Scaffold(
       // -- APPBAR --
-      appBar: AppBar(title: const Text('Gestionar Space')),
+      appBar: AppBar(title: const Text('Gestionar espacio')),
       // -- BODY --
       // cuando cargue los spaces
       body: spacesAsync.when(
         // circulo de carga  
         loading: () => const Center(child: CircularProgressIndicator()),
         // mensaje de error
-        error: (e, s) => Center(child: Text('Error al cargar el Space: $e')),
+        error: (e, s) => Center(child: Text('Error al cargar el espacio: $e')),
         // se obtienen los spaces
         data: (spaces) {
           // buscamos el space actual en la lista de todos nuestros spaces

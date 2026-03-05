@@ -11,8 +11,8 @@ class AppUserModel extends Equatable {
   final String? email;
   final String? name;
   final String? photoUrl;
-  final List<String>
-  spaceIds; // Listas de IDs de espacios a los que pertenece el usuario
+  final bool? emailVerified;
+  final List<String> spaceIds; // Listas de IDs de espacios a los que pertenece el usuario
 
   // constructor
   const AppUserModel({
@@ -20,6 +20,7 @@ class AppUserModel extends Equatable {
     this.email,
     this.name,
     this.photoUrl,
+    this.emailVerified,
     required this.spaceIds,
   });
 
@@ -43,6 +44,7 @@ class AppUserModel extends Equatable {
       email: data['email'] as String?,
       name: data['name'] as String?,
       photoUrl: data['photoUrl'] as String?,
+      emailVerified: data['emailVerified'] as bool? ?? false,
       spaceIds: spaceIdsList,
     );
   }
@@ -55,6 +57,7 @@ class AppUserModel extends Equatable {
       'email': email,
       'name': name,
       'photoUrl': photoUrl,
+      'emailVerified': emailVerified,
       'spaceIds': spaceIds,
     };
   }
@@ -67,13 +70,14 @@ class AppUserModel extends Equatable {
       email: email,
       name: name,
       photoUrl: photoUrl,
+      emailVerified: emailVerified,
       spaceIds: spaceIds,
     );
   }
 
   /// Para la igualdad de valor con Equatable
   @override
-  List<Object?> get props => [id, email, name, photoUrl, spaceIds];
+  List<Object?> get props => [id, email, name, photoUrl, spaceIds, emailVerified];
 
   /// Crea una copia de este objeto con los campos actualizados.
   AppUserModel copyWith({
@@ -81,6 +85,7 @@ class AppUserModel extends Equatable {
     String? email,
     String? name,
     String? photoUrl,
+    bool? emailVerified,
     List<String>? spaceIds,
   }) {
     return AppUserModel(
@@ -88,6 +93,7 @@ class AppUserModel extends Equatable {
       email: email ?? this.email,
       name: name ?? this.name,
       photoUrl: photoUrl ?? this.photoUrl,
+      emailVerified: emailVerified ?? this.emailVerified,
       spaceIds: spaceIds ?? this.spaceIds,
     );
   }

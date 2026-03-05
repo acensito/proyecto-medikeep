@@ -33,6 +33,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<firebase_auth.User> signInWithGoogle() async {
     try {
+
+      // Cerramos sesión en el plugin de Google (no en Firebase) 
+      // para que siempre nos deje elegir cuenta.
+      await _googleSignIn.signOut(); 
+      await _firebaseAuth.signOut(); 
+
       // Iniciamos el flujo de autenticación con Google
       final googleUser = await _googleSignIn.signIn();
       // Si el usuario cancela el inicio de sesión
@@ -195,6 +201,53 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e) {
       // error si falla el servicio firebase
       throw ServerFailure(e.toString());
+    }
+  }
+
+  /// Método que envia un email de verificación de usuario
+  @override
+  Future<void> sendEmailVerification() async {
+    try {
+      // obtenemos el usuario autenticado actual
+      final user = _firebaseAuth.currentUser;
+      // validamos
+      if (user == null) {
+        throw const ServerFailure('No se encontró una sesión activa para verificar el email.');
+      }
+      // en caso positivo, mandamos un email de verificación al usuario
+      await user.sendEmailVerification();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      // excepciones por demasiadas peticiones
+      if (e.code == 'too-many-requests') {
+        throw const ServerFailure('Has realizado demasiadas solicitudes. Inténtalo más tarde.');
+      }
+      // error del servidor
+      throw ServerFailure(e.message ?? 'Error al enviar el email de verificación.');
+    } catch (e) {
+      // otros errores genericos
+      throw ServerFailure(e.toString());
+    }
+  }
+
+  @override
+  Future<bool> checkVerificationStatus() async {
+    try {
+      // obtenemos el usuario actual
+      final user = _firebaseAuth.currentUser;
+      // si hay usuario logueado, comprobamos
+      if (user != null) {
+        // forzamos a la app a consultar los servidores de Google 
+        // para refrescar el estado de la verificación. 
+        // sin esto, 'emailVerified' siempre devolvería 'false'
+        // aunque el usuario ya lo haya pulsado.
+        await user.reload();
+        
+        // devolvemos el estado actualizado
+        return _firebaseAuth.currentUser!.emailVerified;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

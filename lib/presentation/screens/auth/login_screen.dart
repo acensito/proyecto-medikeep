@@ -233,7 +233,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _onEmailAuth,
                     child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2.5,))
                         : Text(
                             _isRegisterMode ? 'Registrarse' : 'Iniciar Sesión',
                           ),

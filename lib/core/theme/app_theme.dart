@@ -14,9 +14,7 @@ class AppTheme {
   static const Color _secondaryColor = Color(0xFFFF9800);
 
   // Color de fondo principal
-  static const Color _backgroundColor = Color(0xFFF5F7FA); //Color(0xFFEEEEEE);
-
-  // Color blanco puro para tarjetas y superficies
+  static const Color _backgroundColor = Color(0xFFF5F7FA); 
   static const Color _surfaceColor = Colors.white;
 
   // --- CORRECCIÓN: Hacemos públicos estos colores para evitar advertencias ---

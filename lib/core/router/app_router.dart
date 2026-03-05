@@ -7,40 +7,69 @@ import 'package:medikeep/presentation/screens/screens.dart';
 
 /// Proveedor del enrutador de la aplicación usando GoRouter
 final routerProvider = Provider<GoRouter>((ref) {
-  /// Obtenemos el estado de autenticación del usuario
+
+  // Notificador para recalcular el enrutado
+  final refreshNotifier = _RouterRefreshNotifier();
+
+  // Listerner que reevalua si hay cambios en la autenticación
+  ref.listen(authStateChangesProvider, (_,__){
+    refreshNotifier.refresh();
+  });
+  // Listener que reevalua si hay cambios en la verificación
+  ref.listen(authVerificationStatusProvider, (_,__){
+    refreshNotifier.refresh();
+  });
+
+  // Leemos los cambios de la autenticación
   final authState = ref.watch(authStateChangesProvider);
 
-  return GoRouter(
+  // Leemos los cambios de la verificación
+  final isUserVerified = ref.watch(authVerificationStatusProvider);
+
+  final router = GoRouter(
     // --- RUTA INICIAL ---
     initialLocation: '/home',
 
+    // GoRouter se refrescará cuando reciba notificaciones 
+    refreshListenable: refreshNotifier,
+
     // --- GESTION REDIRECCIONES ---
     redirect: (BuildContext context, GoRouterState state) {
-      final user = authState.asData?.value; // Usuario actual
-      final bool isLoading = authState.isLoading; // Estado de carga
-      final bool hasUser = user != null; // Si hay usuario autenticado
+      // Espera si esta cargando los datos
+      if (authState.isLoading) return null;
+      // Estado de la autenticación del usuario
+      final user = authState.asData?.value;
+      final bool hasUser = user != null;
+      // Estado de la verificación del usuario
+      final bool isVerified = (user?.emailVerified ?? false) || isUserVerified;
+      // Tiene al menos un espacio asociado
+      final bool hasSpaces = user?.spaceIds.isNotEmpty ?? false;
+      // Ruta a la que intenta acceder
+      final String location = state.matchedLocation;
 
-      final bool isGoingToLogin =
-          state.matchedLocation == '/login'; // Si va a Login
-      final bool isGoingToWelcome =
-          state.matchedLocation == '/welcome'; // Si va a Welcome
-      final bool isForgotPass = state.matchedLocation == '/forgot-password';
+      // Rutas públicas (sin autenticación)
+      const publicRoutes = {'/login', '/forgot-password'};
+      const authRoutes = {'/verify-email'};
+      const onboardingRoutes = {'/welcome'};
 
-      if (isLoading) return null; // Si está cargando, no redirigimos
+      // Sin sesión, solo rutas públicas, por lo que mandamos a login
+      if (!hasUser) return publicRoutes.contains(location) ? null : '/login';
+      
+      // Con sesión, pero sin verificar, remitimos a la ruta de verify
+      if (!isVerified) return authRoutes.contains(location) ? null : '/verify-email';
 
-      // Rutas publicas: si no tiene ususario, no se esta registrando
-      // o no esta recuperando la contraseña, se redirige al login
-      if (!hasUser && !isGoingToLogin && !isForgotPass) return '/login';
+      // Con sesión verificada pero sin espacios 
+      // Remitimos a pantalla onboarding/welcome si no la ha visto por primera vez
+      if (!hasSpaces) return onboardingRoutes.contains(location) ? null : '/welcome';
 
-      // Ruta privada: Si tiene usuario y va al login -> redirigimos a Home
-      if (hasUser && isGoingToLogin) return '/home';
+      // Con sesion verificada y espacios, remitimos al home/dashboard
+      if (publicRoutes.contains(location) || 
+          authRoutes.contains(location) || 
+          onboardingRoutes.contains(location)) {
+        return '/home';
+      }
 
-      // Ruta privada: Si TIENE usuario pero NO tiene Spaces -> Pantalla Bienvenida Welcome
-      if (hasUser && user.spaceIds.isEmpty && !isGoingToWelcome) return '/welcome';
-
-      // Ruta privada: Si TIENE usuario y TIENE Spaces e intenta ir a Welcome -> Home
-      if (hasUser && user.spaceIds.isNotEmpty && isGoingToWelcome) return '/home';
-
+      // Cualquier otra ruta, no redirigimos (inválidas)
       return null;
     },
 
@@ -52,6 +81,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'login-screen',
         builder: (context, state) => const LoginScreen(),
       ),
+      GoRoute(
+        path: '/verify-email',
+        name: 'verify-email',
+        builder: (context, state) => const VerificationPendingScreen(),
+        ),
       GoRoute(
         path: '/forgot-password',
         name: 'forgot-password',
@@ -221,7 +255,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
-      // Escáner
+      // Scanner de códigos de barras
       GoRoute(
         path: '/scanner',
         name: 'scanner',
@@ -229,4 +263,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+
+  return router;
 });
+
+/// Convierte un Stream en un Listenable que GoRouter entiende.
+class _RouterRefreshNotifier extends ChangeNotifier {
+  void refresh() {
+    notifyListeners();
+  }
+}

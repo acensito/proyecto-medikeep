@@ -41,7 +41,7 @@ class LocalNotificationService {
     try {
       // Establecemos el timezone local
       tz.setLocalLocation(tz.getLocation(timeZoneID));
-      Console.log('🌍 Zona horaria configurada: $timeZoneID');
+      Console.log('Zona horaria configurada: $timeZoneID');
     } catch (e) {
       // Devolvemos error y dejamos hora en formato UTC
       Console.err('Error zona horaria: $e. Usando UTC.');
@@ -49,7 +49,7 @@ class LocalNotificationService {
     }
 
     // Configuración para Android
-    const initAndroidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initAndroidSettings = AndroidInitializationSettings('@mipmap/launcher_icon');
 
     // Configuracion de inicialización
     const initSettings = InitializationSettings(android: initAndroidSettings);
@@ -159,7 +159,8 @@ class LocalNotificationService {
       body,
       notificationDate,
       _notificationDetails(),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle, //ajuste para politicas GPlay
+      // androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       //matchDateTimeComponents: DateTimeComponents.time //activandolo haría que se repita diariamente
     );
     // Mostamos mensaje de exito a nivel debug unicamente
@@ -169,7 +170,7 @@ class LocalNotificationService {
   // Metodo que cancela una notificacion dada por su id (id del medicamento en BD)
   Future<void> cancelNotification(int id) async {
     await _notificationsPlugin.cancel(id);
-    Console.log('🗑️ Notificación cancelada con ID: $id');
+    Console.log('Notificación cancelada con ID: $id');
   }
 
   // Metodo que cancela todas las notificaciones programadas en el sistema
@@ -181,6 +182,6 @@ class LocalNotificationService {
     // Cancelamos todas las notificaciones
     await _notificationsPlugin.cancelAll();
     // Mostramos mensaje por consola unicamente a modo debug
-    Console.log('🧹 Todas las notificaciones han sido canceladas.');
+    Console.log('Todas las notificaciones han sido canceladas.');
   }
 }

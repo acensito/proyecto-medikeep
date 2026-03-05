@@ -9,7 +9,7 @@ class SignInWithEmail {
   final AuthRepository repository;
 
   // Constructor
-  SignInWithEmail(this.repository);
+  SignInWithEmail({required this.repository});
 
   // Método para ejecutar el caso de uso
   // Retorna un Either con un Failure o un AppUser autenticado
